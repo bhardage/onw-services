@@ -9,6 +9,8 @@ namespace ONWServices.Controllers
     //Game must have 1 Warewolf, Seer, Robber, and Troublemaker
     //Game can only have 1 Game Master
 
+        //test
+
 
 
     [Route("api/games")]
