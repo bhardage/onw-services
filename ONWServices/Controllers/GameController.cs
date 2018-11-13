@@ -10,6 +10,7 @@ namespace ONWServices.Controllers
     //Game can only have 1 Game Master
 
 
+
     [Route("api/games")]
     [ApiController]
     public class GamesController : ControllerBase
