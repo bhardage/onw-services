@@ -12,26 +12,24 @@ namespace ONWServices.Tests.Integration.Repositories
     public class GameRepositoryTest : BaseMongoIntegrationTest
     {
         private GameRepository cut;
-
-        private static MongoDbContext _dbContext;
+        
         private static string _collectionName;
         private static IMongoCollection<Game> _collection;
 
         [ClassInitialize]
         public static void BeforeAll(TestContext context)
         {
-            _dbContext = CreateMongoDbContext();
             _collectionName = "games";
-            _collection = _dbContext.Database.GetCollection<Game>(_collectionName);
+            _collection = DbContext.Database.GetCollection<Game>(_collectionName);
         }
 
         [TestInitialize]
         public void BeforeEach()
         {
             //Wipe out the collection before each test
-            _dbContext.Database.DropCollection(_collectionName);
+            DbContext.Database.DropCollection(_collectionName);
 
-            cut = new GameRepository(CreateOnwDbContext(_dbContext));
+            cut = new GameRepository(CreateOnwDbContext(DbContext));
         }
 
         [TestMethod]
@@ -76,6 +74,12 @@ namespace ONWServices.Tests.Integration.Repositories
             //Make sure the game was actually deleted
             List<Game> newResults = _collection.Find(_ => true).ToList();
             Assert.AreEqual(2, newResults.Count);
+        }
+
+        [ClassCleanup]
+        public static void AfterAll()
+        {
+            _collection = null;
         }
     }
 }

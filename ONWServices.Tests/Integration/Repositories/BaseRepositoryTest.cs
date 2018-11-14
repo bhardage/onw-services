@@ -14,25 +14,23 @@ namespace ONWServices.Tests.Integration.Repositories
     {
         private TestBaseRepository cut;
 
-        private static MongoDbContext _dbContext;
         private static string _collectionName;
         private static IMongoCollection<TestDocument> _collection;
 
         [ClassInitialize]
         public static void BeforeAll(TestContext context)
         {
-            _dbContext = CreateMongoDbContext();
             _collectionName = "test";
-            _collection = _dbContext.Database.GetCollection<TestDocument>(_collectionName);
+            _collection = DbContext.Database.GetCollection<TestDocument>(_collectionName);
         }
 
         [TestInitialize]
         public void BeforeEach()
         {
             //Wipe out the collection before each test
-            _dbContext.Database.DropCollection(_collectionName);
+            DbContext.Database.DropCollection(_collectionName);
 
-            cut = new TestBaseRepository(CreateOnwDbContext(_dbContext), _collectionName);
+            cut = new TestBaseRepository(CreateOnwDbContext(DbContext), _collectionName);
         }
 
         [TestMethod]
@@ -142,6 +140,12 @@ namespace ONWServices.Tests.Integration.Repositories
                 new List<string> { "test1", "test3" },
                 newResults.Select(td => td.TestValue).ToList()
             );
+        }
+
+        [ClassCleanup]
+        public static void AfterAll()
+        {
+            _collection = null;
         }
     }
 

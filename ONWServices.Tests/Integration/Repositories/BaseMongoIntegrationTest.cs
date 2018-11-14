@@ -10,16 +10,38 @@ namespace ONWServices.Tests.Integration.Repositories
     {
         private const string DATABASE_NAME = "testdb";
 
-        protected static MongoDbContext CreateMongoDbContext()
-        {
-            MongoDbRunner runner = MongoDbRunner.Start();
+        private static MongoDbContext _dbContext;
 
-            return new MongoDbContext
+        protected static MongoDbContext DbContext
+        {
+            get
             {
-                Runner = runner,
-                Database = new MongoClient(runner.ConnectionString).GetDatabase(DATABASE_NAME),
-                DatabaseName = DATABASE_NAME
-            };
+                return _dbContext;
+            }
+        }
+
+        public static void InitializeDbContext()
+        {
+            if (_dbContext == null)
+            {
+                MongoDbRunner runner = MongoDbRunner.Start();
+
+                _dbContext = new MongoDbContext
+                {
+                    Runner = runner,
+                    Database = new MongoClient(runner.ConnectionString).GetDatabase(DATABASE_NAME),
+                    DatabaseName = DATABASE_NAME
+                };
+            }
+        }
+
+        public static void DestroyDbContext()
+        {
+            if (_dbContext != null)
+            {
+                _dbContext.Runner.Dispose();
+                _dbContext = null;
+            }
         }
 
         protected OnwDbContext CreateOnwDbContext(MongoDbContext dbContext)
