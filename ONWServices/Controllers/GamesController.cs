@@ -36,9 +36,9 @@ namespace ONWServices.Controllers
         }
 
         [HttpPost]
-        public ActionResult<GameViewModel> UpdateGameSettings(string id, int gameState)    
+        public ActionResult<GameViewModel> UpdateGameSettings(GameViewModel game)
         {
-            return new GameViewModel() { };
+            return new GameViewModel() { gameState = game.gameState, id = game.id };
         }
 
         [HttpDelete("{id}")]
