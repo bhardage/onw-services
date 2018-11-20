@@ -76,6 +76,18 @@ namespace ONWServices.Tests.Integration.Repositories
             Assert.AreEqual(2, newResults.Count);
         }
 
+        [TestMethod]
+        public void TestGetStatusById()
+        {
+            Guid gameIdToFind = Guid.NewGuid();
+            _collection.InsertOne(new Game { GameId = Guid.NewGuid()});
+            _collection.InsertOne(new Game { GameId = gameIdToFind, Status = GameStatus.Closed });
+            _collection.InsertOne(new Game { GameId = Guid.NewGuid() });
+
+            Game result = cut.FindByGameId(gameIdToFind);            
+            Assert.AreEqual(GameStatus.Closed, result.Status);
+        }
+
         [ClassCleanup]
         public static void AfterAll()
         {
