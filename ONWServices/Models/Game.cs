@@ -23,6 +23,7 @@ namespace ONWServices.Models
 
     public enum GameStatus
     {
-        New
+        New,
+        Closed
     }
 }
