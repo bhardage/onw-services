@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ONWServices.Initializers;
+using ONWServices.Mappers;
 using ONWServices.Repositories;
 using ONWServices.Settings;
 
@@ -35,6 +37,8 @@ namespace ONWServices
             
             services.AddSingleton<IOnwDbContext, OnwDbContext>();
             services.AddSingleton<IGameRepository, GameRepository>();
+            services.AddSingleton<GameInitializer, GameInitializer>();
+            services.AddSingleton<GameMapper, GameMapper>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
