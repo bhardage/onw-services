@@ -1,8 +1,10 @@
-﻿namespace ONWServices.ViewModels
+﻿using ONWServices.Models;
+
+namespace ONWServices.ViewModels
 {
     public class GameViewModel
     {
-        public int gameState { get; set; }
-        public string id { get; set; }
+        public GameStatus status { get; set; }
+        public string gameId { get; set; }
     }
 }

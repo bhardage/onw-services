@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using ONWServices.Initializers;
 using ONWServices.Models;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,8 @@ namespace ONWServices.Tests.Unit
         public void WhenNewGame_GameShouldHaveStatusOfNew()
         {
             var game = new Game();
+            var initializer = new GameInitializer();
+            game = initializer.Setup(game);
 
             Assert.AreEqual(GameStatus.New, game.Status);
         }
