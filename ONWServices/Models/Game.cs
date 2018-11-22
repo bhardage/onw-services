@@ -9,15 +9,9 @@ namespace ONWServices.Models
     [BsonIgnoreExtraElements]
     public class Game : BaseDocument
     {
-        public Game() {
-            Status = GameStatus.New;
-            SelectedRoles = new List<Role>
-            {
-                Role.Warewolf,
-                Role.Seer,
-                Role.Robber,
-                Role.Troublemaker
-            };
+        public Game()
+        {
+            GameId = Guid.NewGuid();
         }
 
         [BsonElement("gameId")]
@@ -30,6 +24,7 @@ namespace ONWServices.Models
 
     public enum GameStatus
     {
+        Undefined,
         New,
         Closed
     }

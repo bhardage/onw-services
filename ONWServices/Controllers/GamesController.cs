@@ -1,5 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ONWServices.Initializers;
+using ONWServices.Mappers;
+using ONWServices.Models;
+using ONWServices.Repositories;
 using ONWServices.ViewModels;
+using System;
 
 namespace ONWServices.Controllers
 {
@@ -22,28 +27,50 @@ namespace ONWServices.Controllers
     [ApiController]
     public class GamesController : ControllerBase
     {
+        private readonly IGameRepository _repo;
+        private readonly GameInitializer _initializer;
+        private readonly GameMapper _mapper;
+
+        public GamesController(IGameRepository repo, GameInitializer initializer, GameMapper mapper)
+        {
+            this._repo = repo;
+            this._initializer = initializer;
+            this._mapper = mapper;
+        }
+
         [HttpGet]
         public ActionResult<GameViewModel> CreateGame()
-        {
-            return new ActionResult<GameViewModel>(new GameViewModel() { id = "1234" });
-            
+        {            
+            var game = new Game();
+            game = _initializer.Setup(game);
+            _repo.Save(game);
+
+            var dm = _repo.FindByGameId(game.GameId);
+            var vm = _mapper.ToViewModel(dm);
+            return new ActionResult<GameViewModel>(vm);            
         }
 
         [HttpGet("{id}")]
         public ActionResult<GameViewModel> GetGame(string id)
         {
-            return new GameViewModel() { id = id };
+            var game = _repo.FindByGameId(new Guid(id));
+            return _mapper.ToViewModel(game);           
         }
 
         [HttpPost]
-        public ActionResult<GameViewModel> UpdateGameSettings(GameViewModel game)
+        public ActionResult<GameViewModel> UpdateGameSettings(GameViewModel vm)
         {
-            return new GameViewModel() { gameState = game.gameState, id = game.id };
+            var newDm = _mapper.ToDomainModel(vm);
+            _repo.Save(newDm);
+            return _mapper.ToViewModel(newDm);
         }
 
         [HttpDelete("{id}")]
         public string CloseGame(string id)
         {
+            var game = _repo.FindByGameId(new Guid(id));
+            game.Status = GameStatus.Closed;
+            _repo.Save(game);
             return "Game Closed";
         }
     }
