@@ -20,16 +20,5 @@ namespace ONWServices.Tests.Unit
 
             Assert.AreEqual(GameStatus.New, game.Status);
         }
-
-        [TestMethod]
-        public void WhenNewGame_MustHaveDefaultRoles()
-        {
-            var game = new Game();
-
-            Assert.IsTrue(game.SelectedRoles.Contains(Role.Warewolf));
-            Assert.IsTrue(game.SelectedRoles.Contains(Role.Seer));
-            Assert.IsTrue(game.SelectedRoles.Contains(Role.Robber));
-            Assert.IsTrue(game.SelectedRoles.Contains(Role.Troublemaker));
-        }
     }    
 }
