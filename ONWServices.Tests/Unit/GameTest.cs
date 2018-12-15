@@ -11,7 +11,7 @@ namespace ONWServices.Tests.Unit
     //Game can only have 1 Game Master
 
     [TestClass]
-    public class NewGameTest
+    public class GameTest
     {
         [TestMethod]
         public void WhenNewGame_GameShouldHaveStatusOfNew()
